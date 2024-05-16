@@ -143,36 +143,5 @@ class RegisterController extends Controller
         // Gibt das aktualisierte Register zurück
         return response()->json($register);
     }
-  /*  public function assignNotes(Request $request, $registerId) {
-        // Finde das Register anhand seiner ID
-        $register = Register::find($registerId);
-        if (!$register) {
-            // Wenn das Register nicht gefunden wird, gebe eine Fehlermeldung zurück
-            return response()->json(['message' => 'Register not found'], 404);
-        }
 
-        // Erwarte, dass 'note_id' im Request übergeben wird
-        $noteId = $request->input('note_id');
-        if (!$noteId) {
-            // Wenn 'note_id' nicht im Request ist, gebe eine Fehlermeldung zurück
-            return response()->json(['message' => 'Note ID is required'], 400);
-        }
-
-        // Finde die Notiz anhand ihrer ID
-        $note = Note::find($noteId);
-        if (!$note) {
-            // Wenn die Notiz nicht gefunden wird, gebe eine Fehlermeldung zurück
-            return response()->json(['message' => 'Note not found'], 404);
-        }
-
-        // Weise die Notiz dem Register zu
-        // Nutze Eloquent's attach() Methode, wenn Sie eine Many-to-Many-Beziehung haben
-        $register->notes()->attach($noteId);
-
-        // Alternativ: Nutze sync() ohne Duplikate, wenn es sich um wiederholte Zuweisungen handelt
-        // $register->notes()->syncWithoutDetaching([$noteId]);
-
-        // Gebe eine Erfolgsmeldung zurück
-        return response()->json(['message' => 'Note assigned to register successfully'], 200);
-    }*/
 }

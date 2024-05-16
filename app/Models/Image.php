@@ -24,7 +24,7 @@ class Image extends Model
     {
         // Die morphTo-Methode definiert eine polymorphe Beziehung in Laravel.
         // Dies bedeutet, dass das Bild zu verschiedenen Modellen gehören kann,
-        // je nachdem, wie es in der Datenbank verwendet wird.
+        // je nachdem, wie es in der Datenbank verwendet wird. Vorschlag von ChatGPT
         return $this->morphTo();
     }
 

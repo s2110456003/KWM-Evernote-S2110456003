@@ -33,15 +33,6 @@ class NotesTableSeeder extends Seeder
         ]);
         $note->images()->save($image); // Verknüpfe das Bild mit der Notiz
 
-
-        //Register hinzufügen
-        /*$register = Register::find(1);  // Beispiel: Abrufen des Registers mit ID 1
-        if ($register) {
-            $note->register()->associate($register);
-        }*/
-
-
-
         $note2 = new Note();
         $note2->title = 'Muttertag';
         $note2->description = 'Gedicht schreiben';
@@ -49,10 +40,6 @@ class NotesTableSeeder extends Seeder
         $user2 = User::inRandomOrder()->first();
         $note2->user()->associate($user2);
 
-        /*$register2 = Register::find(2);  // Beispiel: Abrufen des Registers mit ID 2
-        if ($register2) {
-            $note2->register2()->associate($register2);
-        }*/
         $note2->save();
 
         // Bild zur Notiz hinzufügen
@@ -68,11 +55,6 @@ class NotesTableSeeder extends Seeder
 
         $user3 = User::inRandomOrder()->first();
         $note3->user()->associate($user3);
-
-       /* $register3 = Register::find(3);  // Beispiel: Abrufen des Registers mit ID 1
-        if ($register3) {
-            $note3->register3()->associate($register3);
-        }*/
 
         $note3->save();
 

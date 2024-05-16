@@ -52,64 +52,7 @@ class NoteController extends Controller
         return response()->json($notes, 200);
     }
 
-    // Funktion, um eine neue Notiz zu speichern
-   /* public function save(Request $request): JsonResponse
-    {
-        // Parse und formatiere das Datum der Anfrage
-        $request = $this->parseRequest($request);
-        // Starte eine Datenbank-Transaktion
-        DB::beginTransaction();
-        try {
-            // Erstelle eine neue Notiz mit den Daten aus der Anfrage
-            $note = Note::create($request->all());
 
-            // Wenn Bilder mitgesendet wurden, speichere diese Bilder zur Notiz
-            if (isset($request['images']) && is_array($request['images'])) {
-                foreach ($request['images'] as $img) {
-                    $image = Image::firstOrNew(['url' => $img['url'], 'title' => $img['title']]);
-                    $note->images()->save($image);
-                }
-            }
-
-            // Wenn ein Register mitgesendet wurde, verknüpfe es mit der Notiz
-            if(isset($request['register'])){
-                $reg = $request['register'];
-                $register = Register::firstOrNew(['title'=>$reg['title']]);
-                $note->register()->save($register);
-            }
-
-            // Wenn Tags mitgesendet wurden, verknüpfe sie mit der Notiz
-            if (isset($request['tags']) && is_array($request['tags'])) {
-                foreach ($request['tags'] as $tagId) {
-                    $tag = TodoEntry::find($tagId);
-                    if ($tag) {
-                        $tag->note_id = $note->id;
-                        $tag->save();
-                    }
-                }
-            }
-
-            // Wenn ToDo-Einträge mitgesendet wurden, verknüpfe sie mit der Notiz
-            if (isset($request['todoEntries']) && is_array($request['todoEntries'])) {
-                foreach ($request['todoEntries'] as $todoId) {
-                    $todo = TodoEntry::find($todoId);
-                    if ($todo) {
-                        $todo->note_id = $note->id;
-                        $todo->save();
-                    }
-                }
-            }
-            // Bestätige die Datenbank-Transaktion
-            DB::commit();
-            // Gibt die neu erstellte Notiz zurück
-            return response()->json($note, 201);
-        } catch (\Exception $e) {
-            // Bei einem Fehler, mache die Transaktion rückgängig
-            DB::rollBack();
-            return response()->json("updating note failed: " . $e->getMessage(), 420);
-        }
-    }
-*/
     public function save(Request $request): JsonResponse
     {
         $request = $this->parseRequest($request);
@@ -134,18 +77,7 @@ class NoteController extends Controller
 
                 $note->registers()->sync($registerIds);
             }
-/*
-            // Verknüpfen von Tags über Zwischentabelle
-            if (isset($request['tags']) && is_array($request['tags'])) {
-                // Verwenden Sie `pluck('id')` wenn Sie ein Array von Objekten erhalten, sonst verwenden Sie direkt $request['tags']
-                $tagIds = array_map(function ($tag) {
-                    $t = CategoryTag::firstOrCreate(['name' => $tag['name']]); // Erstellt den Tag, wenn er nicht existiert
-                    return $t->id;
-                }, $request['tags']);
 
-                $note->tags()->sync($tagIds);
-            }
-*/
             // Verknüpfen von TodoEntries
             if (isset($request['todoEntries']) && is_array($request['todoEntries'])) {
                 foreach ($request['todoEntries'] as $todoId) {
@@ -173,15 +105,7 @@ class NoteController extends Controller
         }
         return $request;
     }
-/*
-    // Funktion, um eine Anfrage zu parsen und das Datum zu formatieren
-    private function parseRequest(Request $request): Request
-    {
-        $date = new DateTime($request->created_at);
-        $request['created_at'] = $date->format('Y-m-d H:i:s');
-        return $request;
-    }
-*/
+
     // Funktion, um eine Notiz zu aktualisieren
     public function update(Request $request, int $id): JsonResponse
     {
@@ -248,23 +172,5 @@ class NoteController extends Controller
         return response()->json($note->load('tags'));
     }
 
-  /* public function assignTag(Request $request, $noteId) {
-        // Finde das Notiz anhand seiner ID
-        $note = Note::find($noteId);
-        if (!$note) {
-            // Wenn die Notiz nicht gefunden wird, gebe eine Fehlermeldung zurück
-            return response()->json(['message' => 'Note not found'], 404);
-        }
 
-        // Weise den Tag, die in der Anfrage gesendet wurden, der Notiz zu
-        $tag_id = $request->get('$tag_id', []);
-        $note->tags()->sync($tag_id);
-
-        // Lade das Register neu, um die aktualisierten Notizen zu zeigen
-        $note = Note::with('tags')->find($noteId);
-
-        // Gibt das aktualisierte Register zurück
-        return response()->json($note);
-    }
-*/
 }
